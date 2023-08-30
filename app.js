@@ -11,17 +11,61 @@ document.addEventListener("DOMContentLoaded", function () {
             
             if (userAge >= 18) {
                 // Usuario autorizado, mostrar alerta de bienvenida
-                alert("¡Bienvenido al Bar De Vicente!");
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Bienvenido al Bar De Vicente!',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
                 initializePage(); // Inicializar funcionalidad del carrito si es necesario
             } else {
                 // Usuario no autorizado, mostrar alerta de no acceso
-                alert("Lo siento, no tienes la edad suficiente para acceder a esta página.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lo siento, no tienes la edad suficiente para acceder a esta página.',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
             }
         } else {
-            alert("Por favor, ingresa una edad válida.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Por favor, ingresa una edad válida.',
+                showConfirmButton: false,
+                timer: 3000
+            });
         }
     }
+    // Obtener los datos JSON
+    fetch('data.json')
+      .then(response => response.json())
+      .then(products => {
+        // Función para llenar los productos
+        llenarProductos(products);
+      });
 });
+function llenarProductos(products) {
+    var contenedorItem = document.querySelector('.contenedor-item');
+  
+    products.forEach(product => {
+      var item = document.createElement('div');
+      item.classList.add('item');
+      item.innerHTML = `
+          <span class="titulo-item">${product.title}</span>
+          <img src="${product.imageSrc}" alt="${product.title}" class="img-item">
+          <span class="precio-item">$${product.price}</span>
+          <button class="boton-item">Agregar al Carrito</button>
+      `;
+  
+      var button = item.querySelector('.boton-item');
+      button.addEventListener('click', function () {
+          agregarItemAlCarrito(product.title, product.price, product.imageSrc);
+          hacerVisibleCarrito();
+      });
+  
+      contenedorItem.appendChild(item);
+    });
+  }
 //Variable que mantiene el estado visible del carrito
 var carritoVisible = false;
 
@@ -67,7 +111,13 @@ function ready(){
 }
 //Eliminamos todos los elementos del carrito y lo ocultamos
 function pagarClicked(){
-    alert("Gracias por comprar en El Bar De Vicente");
+    Swal.fire({
+        icon: 'success',
+        title: '¡Gracias por comprar en El Bar De Vicente!',
+        text: 'Tu compra ha sido realizada con éxito.',
+        confirmButtonText: 'Cerrar',
+        allowOutsideClick: false, // Evita que el usuario cierre la alerta haciendo clic fuera de ella
+    });
     //Elimino todos los elmentos del carrito
     var carritoItems = document.getElementsByClassName('carrito-items')[0];
     while (carritoItems.hasChildNodes()){
@@ -147,8 +197,18 @@ function agregarItemAlCarrito(titulo, precio, imagenSrc){
     var botonSumarCantidad = item.getElementsByClassName('sumar-cantidad')[0];
     botonSumarCantidad.addEventListener('click',sumarCantidad);
 
-    //Actualizamos total
+    // Agregar item al carrito y luego mostrar notificación
+    itemsCarrito.append(item);
     actualizarTotalCarrito();
+
+    // Mostrar notificación de éxito al agregar
+    Toastify({
+        text: `${titulo} agregado al carrito`,
+        duration: 3000,
+        gravity: "top", // Cambia si lo prefieres en la parte inferior
+        position: "left", // Cambia si lo prefieres centrado o a la derecha
+        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
 }
 //Aumento en uno la cantidad del elemento seleccionado
 function sumarCantidad(event){
@@ -179,7 +239,13 @@ function eliminarItemCarrito(event){
     buttonClicked.parentElement.parentElement.remove();
     //Actualizamos el total del carrito
     actualizarTotalCarrito();
-
+    Toastify({
+        text: "Producto eliminado del carrito",
+        duration: 3000,
+        gravity: "top", // Cambia si lo prefieres en la parte inferior
+        position: "left", // Cambia si lo prefieres centrado o a la derecha
+        backgroundColor: "linear-gradient(to right, #e74c3c, #c0392b)",
+    }).showToast();
     //la siguiente funciòn controla si hay elementos en el carrito
     //Si no hay elimino el carrito
     ocultarCarrito();
@@ -219,3 +285,4 @@ function actualizarTotalCarrito(){
     document.getElementsByClassName('carrito-precio-total')[0].innerText = '$'+total.toLocaleString("es") + ",00";
 
 }
+

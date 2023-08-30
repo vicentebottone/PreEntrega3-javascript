@@ -1,0 +1,33 @@
+[
+    {
+      "title": "Fernet Branca (1 litro)",
+      "imageSrc": "img/fernet branca de 1 litro.jpg",
+      "price": 3600
+    },
+    {
+      "title": "Vodka Absolut (750 ml)",
+      "imageSrc": "img/vodka absolut 750.jpg",
+      "price": 6800
+    },
+    {
+        "title": "Gin Beefeater (750ml)",
+        "imageSrc": "img/gin beefeater 750.jpg",
+        "price": 7000
+    },
+    {
+        "title": "Combo Fernet Branca (1litro) + 2 Coca-Cola Sabor Original (1,75ml)",
+        "imageSrc": "img/combo fernet branca con 2 coca.jpg",
+        "price": 5700
+    },
+    {
+        "title": "Combo Vodka Absolut (750ml) + 2 Jugos Citric",
+        "imageSrc": "img/vodka absolut con jugo citric.jpg",
+        "price": 9000
+    },
+    {
+        "title": "Combo Gin Beefeater (750ml) + Agua Tonica Schweppes (1,5l)",
+        "imageSrc": "img/gin con tonica.jpg",
+        "price": 9500
+    }
+    
+  ]
